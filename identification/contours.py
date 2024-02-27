@@ -55,8 +55,8 @@ def draw_plant_outline(image_path, output_dir):
     print(f"L'image avec les contours a été enregistrée sous : {output_path}")
 
 # Appeler la fonction avec le chemin de l'image téléchargée et le dossier de sortie
-image_path = 'identification/image/plante2.jpg'
-output_dir = 'identification/contours'
+image_path = 'image/plante2.jpg'
+output_dir = 'image/contours'
 
 # Appeler la fonction avec le chemin de l'image et le dossier de sortie
 draw_plant_outline(image_path, output_dir)
