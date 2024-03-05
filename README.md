@@ -1,7 +1,9 @@
 "# Projet_E4" 
 
 installation lib:
-pip install vtkplotlib PyQt5 PyOpenGL
+pip install stl 
+pip install vtkplotlib 
+pip install PyQt5 PyOpenGL
 
 ordre compil:
 python .\identification\points.py
