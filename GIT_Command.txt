@@ -11,5 +11,5 @@ Mettre a jour depuis Github:
 Ajouter modifications a Github:
     git add <files_path>
     git commit -m "<Message résumant les modifs>"
-    git pull origin main
+    (git pull origin main)
     git push origin main
