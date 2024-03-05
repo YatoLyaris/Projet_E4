@@ -25,16 +25,19 @@ def create_faces(points):
     return np.array(faces)
 
 
-def afficher(vertices, faces):
+def creer(vertices, faces, path):
     # Create the mesh
     figure = mesh.Mesh(np.zeros(faces.shape[0], dtype=mesh.Mesh.dtype))
     for i, f in enumerate(faces):
         for j in range(3):
             figure.vectors[i][j] = vertices[f[j]]
-    figure.save('modelisation/plante.stl')
-    v_mesh = Mesh.from_file('modelisation/plante.stl')
+    figure.save(path)
+
+def afficher(path):
+    v_mesh = Mesh.from_file(path)
     vpl.mesh_plot(v_mesh)
     vpl.show()
+
 
 # Chemin du fichier texte contenant les données de contour
 file_path = 'modelisation/points.txt'
@@ -43,4 +46,7 @@ _vertices = get_points(file_path)
 
 _faces = create_faces(_vertices)
 
-afficher(_vertices, _faces)
+_out_path = 'modelisation/plante.stl'
+
+creer(_vertices, _faces, _out_path)
+#afficher(_out_path)
