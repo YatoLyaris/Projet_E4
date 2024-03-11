@@ -1,11 +1,8 @@
-"# Projet_E4" 
+# Projet_E4
 
-installation lib:
-pip install numpy
-pip install numpy-stl 
-pip install vtkplotlib 
-pip install PyQt5 PyOpenGL
-pip install opencv-python
+### installation lib:
+brew install python-tk
+pip install -r requirements.txt
 
 
 ordre compil:
