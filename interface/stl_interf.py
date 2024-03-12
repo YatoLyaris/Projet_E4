@@ -25,7 +25,6 @@ button2.pack(pady=10)
 # Chargement du fichier STL
 stl_file_path = "./modelisation/plante.stl"
 stl_mesh = mesh.Mesh.from_file(stl_file_path)
-
 # Création du canevas pour afficher le maillage STL
 fig = plt.figure(figsize=(5, 5))
 axes = mplot3d.Axes3D(fig)
