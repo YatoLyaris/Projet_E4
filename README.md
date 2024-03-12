@@ -3,7 +3,7 @@
 ## Installation lib:
 
 
-```brew install python-tk```
+```apt-get install python3-tk```
 
 ```pip install -r requirements.txt```
 
