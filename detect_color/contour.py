@@ -4,7 +4,7 @@ import numpy as np
 img = cv2.imread("./images/plante2.jpg")
 hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 bound_lower = np.array([25, 20, 20])
-bound_upper = np.array([100, 255, 255])
+bound_upper = np.array([125, 255, 255])
 
 mask_green = cv2.inRange(hsv_img, bound_lower, bound_upper)
 kernel = np.ones((7, 7), np.uint8)
