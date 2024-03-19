@@ -75,7 +75,7 @@ def plot(output,surface_plot=False):
 midas, transform = download_midas(small=False)
 
 #CV2
-image_path = "./img/haricot2.jpg"
+image_path = "./depth-map/img/haricot2.jpg"
 image = cv2.imread(image_path)
 
 img = process_image(image)
