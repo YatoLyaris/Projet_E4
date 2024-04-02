@@ -2,12 +2,7 @@ from picamera2 import Picamera2
 import time
 import os
 
-path = "../photos/"
-
-if not os.path.exists(path):
-    os.makedirs(path)
-
-def photo(path):
+def photo(path, i):
     picam2 = Picamera2()
     
     # Réglages de la résolution et du format du capteur
@@ -21,7 +16,7 @@ def photo(path):
     picam2.awb_mode = 'auto'  # Balance des blancs automatique
     
     # Prendre une photo
-    name = "camera1_photo_" + str(int(time.time())) + ".jpg"
+    name = "camera1_photo_" + str(i) + ".png"
     path_photo = os.path.join(path, name)
     
     picam2.start_and_capture_file(path_photo,
@@ -30,11 +25,20 @@ def photo(path):
     picam2.close()
     print("Photo capturée:", path_photo)
 
+
 def main():
+
+    path = "../photos/"
+
+    if not os.path.exists(path):
+        os.makedirs(path)
+    
     try:
+        i = 1
         while True:
-            photo(path)
-            time.sleep(60)  # Capturer une photo toutes les 60 secondes
+            photo(path, i)
+            i += 1
+            time.sleep(900)  # Capturer une photo toutes les 60 secondes
     except KeyboardInterrupt:
         print("Arrêt manuel du programme")
     finally:
