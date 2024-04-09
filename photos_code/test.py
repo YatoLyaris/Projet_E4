@@ -15,8 +15,8 @@ def photo(path, i):
     # Réglage de l'équilibre des blancs pour correspondre à l'éclairage ambiant
     picam2.awb_mode = 'auto'  # Balance des blancs automatique
     
-    # Prendre une photo
-    name = "camera1_photo_" + str(i) + ".png"
+    # Prendre une photo (ici angle 1, remplacez le 1 par le bon angle pour ne pas avoir des noms de photos dupliquées)
+    name = f"photo{str(i)}_1.jpg"
     path_photo = os.path.join(path, name)
     
     picam2.start_and_capture_file(path_photo,
