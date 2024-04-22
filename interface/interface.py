@@ -1,4 +1,5 @@
 import sys
+import pandas as pd
 from PyQt5.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QVBoxLayout, QWidget, QSlider, QLabel, QSizePolicy, QDesktopWidget
 from PyQt5.QtCore import Qt, QRect
 from PyQt5.QtGui import QColor, QPalette
@@ -66,7 +67,6 @@ class MainWindow(QMainWindow):
 
         # Ajout du slider prenant la moitié supérieure de l'interface
         self.param_slider = QSlider(Qt.Horizontal)
-        self.param_slider.setRange(0, 360)  # Range étendu pour couvrir les 360 degrés
         self.param_slider.setSingleStep(1)
         self.param_slider.setMaximumWidth(int(width * 0.5))  # Définir la largeur du slider à la moitié de la largeur de l'interface
         vbox_right.addWidget(self.param_slider)
@@ -78,15 +78,18 @@ class MainWindow(QMainWindow):
         vbox_params = QVBoxLayout()
         param_widget.setLayout(vbox_params)
 
-        self.param_label = QLabel("Angle de rotation : 0")
-        vbox_params.addWidget(self.param_label)
-        vbox_params.addWidget(QLabel("Angle de rotation : 0"))
-        vbox_params.addWidget(QLabel("Angle de rotation : 0"))
-        vbox_params.addWidget(QLabel("Angle de rotation : 0"))
-        vbox_params.addWidget(QLabel("Angle de rotation : 0"))
-        vbox_params.addWidget(QLabel("Angle de rotation : 0"))
-        vbox_params.addWidget(QLabel("Angle de rotation : 0"))
-        vbox_params.addWidget(QLabel("Angle de rotation : 0"))
+        # Lire le fichier CSV
+        self.data = pd.read_csv('data/parametres.csv')
+
+        # Créer une liste de QLabels pour stocker les labels correspondant à chaque colonne
+        self.labels = []
+        for i in range(len(self.data.columns)):
+            label = QLabel(f"{self.data.columns[i]} : {self.data.iloc[0].iloc[i]}")
+            vbox_params.addWidget(label)
+            self.labels.append(label)
+
+        # Mettre à jour la plage du slider
+        self.param_slider.setRange(0, len(self.data)-1)  # Range étendu pour couvrir les lignes du dataset
 
         # Mise à jour du label lorsque la valeur du slider change
         self.param_slider.valueChanged.connect(self.update_param_label)
@@ -94,12 +97,10 @@ class MainWindow(QMainWindow):
         self.setWindowTitle('Interface Mouvement plantes 3D')
         self.show()
 
-    def update_param_label(self, value):
-        self.param_label.setText(f"Angle de rotation : {value}")
-
-        # Rotation du mesh selon la valeur du slider
-        self.mesh_item.resetTransform()
-        self.mesh_item.rotate(value, 0, 1, 0)  # Rotation autour de l'axe Y
+    def update_param_label(self):
+        row_index = self.param_slider.value()
+        for i, label in enumerate(self.labels):
+            label.setText(f"{self.data.columns[i]} : {self.data.iloc[row_index].iloc[i]}")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
