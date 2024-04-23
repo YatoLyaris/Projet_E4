@@ -1,11 +1,11 @@
-habitat,date,modele,couleur html,couleur rgb,luminosite,taille (cm),croissance (cm),maladie
-interieur avec lumiere,2024-04-05 17:58:21,samsung SM-G781U1,#757b57,"[117, 123, 87]",132.129,4.675,0.0,healthy
-interieur avec lumiere,2024-04-05 20:32:36,samsung SM-G781U1,#89855a,"[137, 133, 90]",146.339,6.375,1.7,healthy
-interieur avec lumiere,2024-04-05 22:02:37,samsung SM-G781U1,#91875b,"[145, 135, 91]",143.793,6.788,0.413,healthy
-interieur avec lumiere,2024-04-06 11:01:43,samsung SM-G781U1,#787960,"[120, 121, 96]",140.186,6.729,-0.059,healthy
-interieur avec lumiere,2024-04-06 15:59:09,samsung SM-G781U1,#757b59,"[117, 123, 89]",137.524,6.171,-0.558,healthy
-interieur avec lumiere,2024-04-06 19:44:22,samsung SM-G781U1,#717762,"[113, 119, 98]",131.367,7.451,1.28,healthy
-interieur avec lumiere,2024-04-07 00:51:42,samsung SM-G781U1,#928455,"[146, 132, 85]",145.898,8.783,1.332,healthy
-interieur avec lumiere,2024-04-07 10:54:22,samsung SM-G781U1,#6f7c57,"[111, 124, 87]",139.02,8.659,-0.124,healthy
-interieur avec lumiere,2024-04-07 15:07:41,samsung SM-G781U1,#3f5c36,"[63, 92, 54]",130.886,6.663,-1.996,healthy
-interieur avec lumiere,2024-04-07 16:44:25,samsung SM-G781U1,#536149,"[83, 97, 73]",141.764,7.044,0.381,healthy
+date,modele,habitat,maladie,couleur html,couleur rgb,luminosite,taille (cm),croissance (cm)
+2024-04-05 17:58:21,samsung SM-G781U1,a,healthy,#757b57,"[117, 123, 87]",132.129,4.675,0.0
+2024-04-05 20:32:36,samsung SM-G781U1,a,healthy,#89855a,"[137, 133, 90]",146.339,6.375,1.7
+2024-04-05 22:02:37,samsung SM-G781U1,a,healthy,#91875b,"[145, 135, 91]",143.793,6.788,0.413
+2024-04-06 11:01:43,samsung SM-G781U1,a,healthy,#787960,"[120, 121, 96]",140.186,6.729,-0.059
+2024-04-06 15:59:09,samsung SM-G781U1,a,healthy,#757b59,"[117, 123, 89]",137.524,6.171,-0.558
+2024-04-06 19:44:22,samsung SM-G781U1,a,healthy,#717762,"[113, 119, 98]",131.367,7.451,1.28
+2024-04-07 00:51:42,samsung SM-G781U1,a,healthy,#928455,"[146, 132, 85]",145.898,8.783,1.332
+2024-04-07 10:54:22,samsung SM-G781U1,a,healthy,#6f7c57,"[111, 124, 87]",139.02,8.659,-0.124
+2024-04-07 15:07:41,samsung SM-G781U1,a,healthy,#3f5c36,"[63, 92, 54]",130.886,6.663,-1.996
+2024-04-07 16:44:25,samsung SM-G781U1,a,healthy,#536149,"[83, 97, 73]",141.764,7.044,0.381
