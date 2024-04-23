@@ -11,6 +11,6 @@ pyqt5
 pyqtgraph
 rembg
 scikit-image
-stl
+numpy-stl
 torch
 torchvision
