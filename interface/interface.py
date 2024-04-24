@@ -1,12 +1,20 @@
 import sys
+import os
 import pandas as pd
 import matplotlib.pyplot as plt
-from PyQt5.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QVBoxLayout, QWidget, QSlider, QLabel, QSizePolicy, QDesktopWidget, QPushButton
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from PyQt5.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QVBoxLayout, QWidget, QSlider, QLabel, QSizePolicy, QDesktopWidget, QPushButton, QDialog
 from PyQt5.QtCore import Qt, QRect
 from PyQt5.QtGui import QColor, QPalette
-import pyqtgraph.opengl as gl
-import numpy as np
-from stl import mesh
+
+class GraphDialog(QDialog):
+    def __init__(self, fig, title):
+        super().__init__()
+
+        self.setWindowTitle(title)
+        self.setLayout(QVBoxLayout())
+        self.layout().addWidget(FigureCanvas(fig))
+        self.resize(800, 600)
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -68,25 +76,6 @@ class MainWindow(QMainWindow):
         vbox_left = QVBoxLayout()
         left_widget.setLayout(vbox_left)
 
-        self.w = gl.GLViewWidget()
-        self.w.setMinimumWidth(int(width * 0.65))  # Définir la largeur minimale du widget de la partie 3D à la moitié de la largeur de l'interface
-        vbox_left.addWidget(self.w)
-
-        # Chargement du fichier STL et création d'un objet GLMeshItem
-        stl_mesh = mesh.Mesh.from_file('modelisation/plante.stl')
-        shape = stl_mesh.points.shape
-        points = stl_mesh.points.reshape(-1, 3)
-        faces = np.arange(points.shape[0]).reshape(-1, 3)
-
-        meshdata = gl.MeshData(vertexes=points, faces=faces)
-        self.mesh_item = gl.GLMeshItem(meshdata=meshdata, smooth=True, drawFaces=False, drawEdges=True, edgeColor=(0, 1, 0, 1))
-        self.w.addItem(self.mesh_item)
-
-        # Création d'une grille 3D pour la scène
-        grid = gl.GLGridItem()
-        grid.translate(*points.mean(axis=0))  # Déplacer la grille au centre de la modélisation STL
-        self.w.addItem(grid)
-
         # Ajout de la partie paramètres à droite
         right_widget = QWidget()
         hbox.addWidget(right_widget)
@@ -126,6 +115,33 @@ class MainWindow(QMainWindow):
         # Mise à jour du label lorsque la valeur du slider change
         self.param_slider.valueChanged.connect(self.update_param_label)
 
+        # Chargement du graphique enregistré à la place de la modélisation 3D
+        depth_map_path = 'images/depth_map/depth_map1.png'
+        if os.path.exists(depth_map_path):
+            self.depth_map_image = plt.imread(depth_map_path)
+
+            # Création d'un canvas matplotlib pour afficher le graphique
+            self.figure = plt.figure()
+            self.canvas = FigureCanvas(self.figure)
+
+            # Ajout du widget pour afficher le graphique
+            self.graph_widget = QWidget()
+            self.graph_widget.setFixedSize(800, 800)  # Définir une taille fixe pour le widget (largeur, hauteur)
+            self.graph_layout = QVBoxLayout()
+            self.graph_widget.setLayout(self.graph_layout)
+
+            self.graph_layout.addWidget(self.canvas)
+            vbox_left.addWidget(self.graph_widget)
+
+            # Mise à jour du graphique lorsque la valeur du slider change
+            self.param_slider.valueChanged.connect(self.update_depth_map_plot)
+
+            # Appeler la fonction update_depth_map_plot() pour afficher la carte de profondeur dès le début
+            self.update_depth_map_plot()
+
+        else:
+            print("Le fichier depth_map1.png n'existe pas dans le répertoire spécifié.")
+
         self.setWindowTitle('Interface Mouvement plantes 3D')
         self.show()
 
@@ -134,26 +150,52 @@ class MainWindow(QMainWindow):
         for i, label in enumerate(self.labels):
             label.setText(f"{self.data.columns[i]} : {self.data.iloc[row_index].iloc[i]}")
 
+    def update_depth_map_plot(self):
+        row_index = self.param_slider.value()
+        # Construire le chemin du fichier de la carte de profondeur correspondante
+        depth_map_path = f'images/depth_map/depth_map{row_index + 1}.png'
+        if os.path.exists(depth_map_path):
+            # Charger la carte de profondeur correspondante
+            depth_map_image = plt.imread(depth_map_path)
+            # Mettre à jour le graphique avec la nouvelle carte de profondeur
+            self.figure.clear()
+            ax = self.figure.add_subplot(111)
+            ax.imshow(depth_map_image, cmap='gray')
+            ax.axis('off')
+            ax.margins(x=0, y=0)  # Réduire les marges autour de la carte de profondeur
+            self.figure.subplots_adjust(left=0, right=1, bottom=0, top=1)  # Ajuster l'espace entre le bord du canvas et la carte de profondeur
+            self.canvas.draw()
+        else:
+            print(f"Le fichier depth_map{row_index + 1}.png n'existe pas dans le répertoire spécifié.")
+
+
     def plot_size_graph(self):
+        fig = plt.figure()
         plt.plot(self.data['date'], self.data['taille (cm)'])
         plt.xlabel('Date')
         plt.ylabel('Taille (cm)')
         plt.title('Graphique: Taille de la plante au cours du temps')
-        plt.show()
+        self.show_graph(fig, 'Taille de la plante')
 
     def plot_growth_graph(self):
+        fig = plt.figure()
         plt.plot(self.data['date'], self.data['croissance (cm)'])
         plt.xlabel('Date')
         plt.ylabel('Croissance (cm)')
         plt.title('Graphique: Croissance de la plante au cours du temps')
-        plt.show()
+        self.show_graph(fig, 'Croissance de la plante')
 
     def plot_size_vs_light_graph(self):
+        fig = plt.figure()
         plt.scatter(self.data['croissance (cm)'], self.data['luminosite'])
         plt.xlabel('croissance (cm)')
         plt.ylabel('Luminosité')
         plt.title('Graphique: croissance en fonction de la luminosité')
-        plt.show()
+        self.show_graph(fig, 'Croissance en fonction de la luminosité')
+
+    def show_graph(self, fig, title):
+        dialog = GraphDialog(fig, title)
+        dialog.exec_()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
