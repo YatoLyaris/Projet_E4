@@ -190,7 +190,7 @@ class MainWindow(QMainWindow):
         plt.scatter(self.data['croissance (cm)'], self.data['luminosite'])
         plt.xlabel('croissance (cm)')
         plt.ylabel('Luminosité')
-        plt.title('Graphique: croissance en fonction de la luminosité')
+        plt.title('Graphique: Croissance en fonction de la luminosité')
         self.show_graph(fig, 'Croissance en fonction de la luminosité')
 
     def show_graph(self, fig, title):
