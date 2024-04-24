@@ -7,6 +7,7 @@ from horaire import capture_time
 from background import removeBackground
 from modele_app import appareil
 from size import size_pixel, size_cm
+from depth_map import download_midas, process_image, predict, plot
 
 def main():
 
@@ -50,17 +51,20 @@ def main():
 
     croissance = 0
 
+    midas, transform = download_midas(small=False)
+
     while True:
 
         photo_path = os.path.join(directory_plante, f"photo{i}_1.jpg")
         back_path = os.path.join(directory_filtre, f"photo{i}_first_plan.png")
 
-        print(photo_path, back_path)
+        print(photo_path, " | ", back_path)
 
         if not os.path.exists(photo_path):
             print(f"fin: {i}")
             break
-
+        
+        # paramètres
         try:
             date = capture_time(photo_path)
         except:
@@ -96,6 +100,13 @@ def main():
         l_cm_size.append(size_cm_plant)
         l_cm_croissance.append(croissance)
         l_maladie.append("healthy")
+
+        # depth_map
+
+        img = process_image(back_path)
+        prediction = predict(img=img,midas=midas,transform=transform)
+
+        plot(output=prediction, name_graph=f"depth_map{i}.png")
 
         i += 1
 
