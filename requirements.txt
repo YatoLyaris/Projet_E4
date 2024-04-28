@@ -4,6 +4,7 @@ matplotlib
 pandas
 numpy
 sickit-learn
+opencv-contrib-python
 opencv-python
 openssl
 pillow==10.2.0
@@ -16,3 +17,4 @@ numpy-stl
 torch
 torchvision
 keras
+timm
